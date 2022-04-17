@@ -1,5 +1,5 @@
 from simpful import *
-from fuzzy_sustems.fuzzy_rules.client_pneumonia_rules import rules
+from fuzzy_systems.fuzzy_rules.client_tuberculosis_rules import rules
 
 FS = FuzzySystem()
 
@@ -20,12 +20,12 @@ FS.add_linguistic_variable("D", LinguisticVariable([D_1, D_2], concept="Одыш
 
 H_1 = FuzzySet(function=Triangular_MF(a=0, b=0.5, c=0.9), term="low")
 H_2 = FuzzySet(function=Triangular_MF(a=1, b=1.1, c=1.2), term="high")
-FS.add_linguistic_variable("D", LinguisticVariable([H_1, H_2], concept="Кровохарканье",
+FS.add_linguistic_variable("H", LinguisticVariable([H_1, H_2], concept="Кровохарканье",
                                                    universe_of_discourse=[0, 1.2]))
 
 DA_1 = FuzzySet(function=Triangular_MF(a=0, b=0.5, c=0.9), term="low")
 DA_2 = FuzzySet(function=Triangular_MF(a=1, b=1.1, c=1.2), term="high")
-FS.add_linguistic_variable("D", LinguisticVariable([DA_1, DA_2], concept="Потеря аппетита и снижение веса",
+FS.add_linguistic_variable("DA", LinguisticVariable([DA_1, DA_2], concept="Потеря аппетита и снижение веса",
                                                    universe_of_discourse=[0, 1.2]))
 
 BT_1 = FuzzySet(function=Triangular_MF(a=0, b=34, c=36.1), term="low")
@@ -51,9 +51,11 @@ FS.add_rules(rules)
 
 FS.set_variable("CP", 1.1)
 FS.set_variable("C", 1.1)
+FS.set_variable("H", 1.1)
 FS.set_variable("D", 1.1)
-FS.set_variable("BT", 36.6)
-FS.set_variable("A", 70)
-FS.set_variable("F", 0.5)
+FS.set_variable("DA", 1.1)
+FS.set_variable("F", 1.1)
+FS.set_variable("BT", 41.7)
+
 
 print(FS.Mamdani_inference(["TP"]))
