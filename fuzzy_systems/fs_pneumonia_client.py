@@ -1,5 +1,5 @@
 from simpful import *
-from client_pneumonia_rules import rules
+from fuzzy_systems.fuzzy_rules.client_pneumonia_rules import rules
 
 FS = FuzzySystem()
 
