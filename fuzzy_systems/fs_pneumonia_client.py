@@ -45,11 +45,18 @@ FS.add_linguistic_variable("PP", LinguisticVariable([PP_1, PP_2, PP_3, PP_4], co
 
 FS.add_rules(rules)
 
-FS.set_variable("CP", 1.1)
-FS.set_variable("C", 1.1)
-FS.set_variable("D", 1.1)
-FS.set_variable("BT", 36.6)
-FS.set_variable("A", 70)
-FS.set_variable("F", 0.5)
 
-print(FS.Mamdani_inference(["PP"]))
+def get_fuzzy_pneumonia_result(params):
+    symptoms = ['CP', 'C', 'D', 'BT', 'A', 'F']
+
+    for symptom in symptoms:
+        if symptom in params:
+            if params[symptom] == 'true':
+                params[symptom] = 1.1
+            elif params[symptom] == 'false':
+                params[symptom] = 0.5
+
+            FS.set_variable(symptom, params[symptom])
+
+    return FS.Mamdani_inference(["PP"])['PP']
+

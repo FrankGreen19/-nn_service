@@ -46,16 +46,19 @@ PP_4 = FuzzySet(function=Triangular_MF(a=87, b=95, c=100), term="very_high")
 FS.add_linguistic_variable("TP", LinguisticVariable([PP_1, PP_2, PP_3, PP_4], concept="Вероятность туберкулеза",
                                                     universe_of_discourse=[0, 100]))
 
-
 FS.add_rules(rules)
 
-FS.set_variable("CP", 1.1)
-FS.set_variable("C", 1.1)
-FS.set_variable("H", 1.1)
-FS.set_variable("D", 1.1)
-FS.set_variable("DA", 1.1)
-FS.set_variable("F", 1.1)
-FS.set_variable("BT", 41.7)
 
+def get_fuzzy_tuberculosis_result(params):
+    symptoms = ['CP', 'C', 'H', 'D', 'DA', 'F', 'BT']
 
-print(FS.Mamdani_inference(["TP"]))
+    for symptom in symptoms:
+        if symptom in params:
+            if params[symptom] == 'true':
+                params[symptom] = 1.1
+            elif params[symptom] == 'false':
+                params[symptom] = 0.5
+
+            FS.set_variable(symptom, params[symptom])
+
+    return FS.Mamdani_inference(["TP"])['TP']
