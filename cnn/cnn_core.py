@@ -1,8 +1,5 @@
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
-from models.classes import AbstractModel
-from models.classes import Pneumonia
-from models.classes import Tuberculosis
 
 
 def get_cnn_prediction(filepath, illness):
