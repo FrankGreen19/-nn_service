@@ -3,6 +3,7 @@ import pika
 import os
 from dotenv import load_dotenv
 import json
+from services import consumer_service
 
 load_dotenv()
 
@@ -21,14 +22,15 @@ queue_name = result.method.queue
 
 channel.queue_bind(exchange=exchange_name, queue=queue_name)
 
-print(' [*] Waiting for logs. To exit press CTRL+C')
+print(' [*] Waiting for messages. To exit press CTRL+C')
 
 def callback(ch, method, properties, body):
-    print(body)
-    json.loads(body)
+    consumer_service.consume(body)
+    ch.basic_ack(delivery_tag = method.delivery_tag)
 
 
+channel.basic_qos(prefetch_count=1)
 channel.basic_consume(
-    queue=queue_name, on_message_callback=callback, auto_ack=True)
+    queue=queue_name, on_message_callback=callback)
 
 channel.start_consuming()

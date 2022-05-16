@@ -41,7 +41,6 @@ if imagePath:
 
         for illness in illnessClassList:
             cnnResults[illness.name] = illness.get_cnn_prediction(imagePath)
-            print('hi')
 
         os.remove(imagePath)
     else:
