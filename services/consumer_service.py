@@ -20,7 +20,7 @@ def consume(messageBody):
 
         illnessList = []
         illnessClassList = []
-        if testType == 'all':
+        if testType == 'Common':
             illnessList = classes.get_subclasses_names()
         else:
             illnessList.append(testType)

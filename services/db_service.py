@@ -1,8 +1,7 @@
 import json
 
-import psycopg2
-from psycopg2 import OperationalError, Error
-from psycopg2.extras import RealDictCursor
+import mysql.connector
+from mysql.connector import Error
 import os
 from dotenv import load_dotenv
 
@@ -12,15 +11,15 @@ def get_connection():
 
     connection = None
     try:
-        connection = psycopg2.connect(
+        connection = mysql.connector.connect(
             host=os.getenv("DB_HOST"),
             port=os.getenv("DB_PORT"),
             database=os.getenv("DB_NAME"),
             user=os.getenv("DB_USER"),
             password=os.getenv("DB_PASS")
         )
-        print("Connection to PostgreSQL DB successful")
-    except OperationalError as e:
+        print("Connected successful")
+    except Error as e:
         print(f"The error '{e}' occurred")
 
     return connection
@@ -32,7 +31,7 @@ def execute_select_query(query):
         return False
 
     connection.autocommit = True
-    cursor = connection.cursor(cursor_factory=RealDictCursor)
+    cursor = connection.cursor(dictionary=True)
 
     cursor.execute(query)
     return cursor.fetchall()
