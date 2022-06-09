@@ -9,16 +9,16 @@ from models.classes import Tuberculosis
 
 load_dotenv()
 
-jVal = '{"symptoms":[{"CP":"true","C":"true","D":"true","BT":36.6,"A":70,"F":"false", "H":"true", "DA":"true"}],"xray_img_name":"jNCLDLR1ug.jpg", "test_type":"Pneumonia","medical_test_id":8,"async_job_id":49}'
+jVal = '{"symptoms":{"CP":"true","C":"true","D":"true","BT":36.6,"A":70,"F":"false", "H":"true", "DA":"true"},"xray_img_name":"jNCLDLR1ug.jpg", "test_type":"Pneumonia","medical_test_id":101,"async_job_id":49}'
 messageContext = json.loads(jVal)
 
 asyncJobId = messageContext["async_job_id"]
 testType = messageContext['test_type']
-symptoms = messageContext['symptoms'][0]
+symptoms = messageContext['symptoms']
 
 illnessList = []
 illnessClassList = []
-if testType == 'all':
+if testType == 'Common':
     illnessList = classes.get_subclasses_names()
 else:
     illnessList.append(testType)
@@ -48,7 +48,7 @@ if imagePath:
         db_service.update_async_job_status(asyncJobId, 'failed')
         exit()
 
-db_service.update_medical_test(messageContext["medical_test_id"], fuzzyResult=json.dumps(fuzzyResults),
-                               cnnResult=json.dumps(cnnResults))
+db_service.update_medical_test(messageContext["medical_test_id"], fuzzyResults=fuzzyResults,
+                               cnnResults=cnnResults)
 
 db_service.update_async_job_status(asyncJobId, 'completed')

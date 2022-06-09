@@ -52,9 +52,10 @@ def consume(messageBody):
                 db_service.update_async_job_status(asyncJobId, 'failed')
                 exit()
 
-        db_service.update_medical_test(messageContext["medical_test_id"], fuzzyResult=json.dumps(fuzzyResults),
-                                       cnnResult=json.dumps(cnnResults))
+        db_service.update_medical_test(messageContext["medical_test_id"], fuzzyResults=fuzzyResults,
+                                       cnnResults=cnnResults)
 
         db_service.update_async_job_status(asyncJobId, 'completed')
-    except BaseException:
+    except BaseException as e:
+        # @todo logs
         db_service.update_async_job_status(asyncJobId, 'failed')
